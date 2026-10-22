@@ -24,6 +24,7 @@ async def test_user_flow(hass: HomeAssistant, mock_api: AiohttpClientMocker) -> 
         DOMAIN, context={"source": SOURCE_USER}
     )
     assert result["type"] is FlowResultType.FORM
+    assert "example_url" in result["description_placeholders"]
 
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"],

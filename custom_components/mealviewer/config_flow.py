@@ -37,6 +37,7 @@ from .const import (
 from .coordinator import MealViewerConfigEntry
 
 USER_SCHEMA = probatio.Schema({probatio.Required(CONF_SCHOOL): str})
+EXAMPLE_URL = "https://schools.mealviewer.com/school/AppletonElementarySchool"
 
 
 class MealViewerConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -81,6 +82,7 @@ class MealViewerConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(USER_SCHEMA, user_input),
             errors=errors,
+            description_placeholders={"example_url": EXAMPLE_URL},
         )
 
 

@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "description": "Enter the school's MealViewer ID or paste its page URL, e.g. https://schools.mealviewer.com/school/AppletonElementarySchool.",
+        "description": "Enter the school's MealViewer ID or paste its page URL, e.g. {example_url}.",
         "data": {
           "school": "School"
         },
