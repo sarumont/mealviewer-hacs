@@ -8,6 +8,7 @@ import re
 from typing import Any
 
 IMAGE_BASE_URL = "https://appassets.mealviewer.com/fooditemimages/"
+LOGO_BASE_URL = "https://appassets.mealviewer.com/schoollogo/"
 SCHOOL_BASE_URL = "https://schools.mealviewer.com/school/"
 
 # USDA nutrient codes are stable across districts; MealViewer's own nutrient
@@ -272,7 +273,7 @@ class School:
     zip: str | None
     district_lookup: str | None
     color: str | None
-    logo_file: str | None
+    logo_url: str | None
 
     @property
     def url(self) -> str:
@@ -282,6 +283,7 @@ class School:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> School:
         settings = data.get("schoolSettings") or {}
+        logo = settings.get("schoolLogo")
         return cls(
             id=data["id"],
             lookup=data["physicalLocationLookup"],
@@ -293,7 +295,7 @@ class School:
             zip=data.get("zip"),
             district_lookup=data.get("districtLookup"),
             color=settings.get("schoolColor"),
-            logo_file=settings.get("schoolLogo"),
+            logo_url=f"{LOGO_BASE_URL}{logo}" if logo else None,
         )
 
 

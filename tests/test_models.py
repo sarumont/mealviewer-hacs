@@ -17,6 +17,9 @@ def test_parse_menu(menu_payload) -> None:
     assert menu.school.id == 9003
     assert menu.school.lookup == "AppletonElementarySchool"
     assert menu.school.url.endswith("/school/AppletonElementarySchool")
+    assert menu.school.logo_url == (
+        "https://appassets.mealviewer.com/schoollogo/619/9003/JY-lMPqZH0OiIkCP1rb0nw.png"
+    )
     assert menu.block_names == {"breakfast": "Breakfast", "lunch": "Lunch"}
     assert {p["name"] for p in menu.info.prices} >= {"Adult Lunch"}
     assert "Gluten" in menu.info.allergens

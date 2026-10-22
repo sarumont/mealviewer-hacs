@@ -16,6 +16,8 @@ announcements.
 - Nutrient `id`s are per district; `nutrientCode` (USDA) is stable and is the key we use. The set of
   nutrients varies by school (e.g. total fat isn't always present).
 - Item images: `https://appassets.mealviewer.com/fooditemimages/{imageFileName}`.
+- School logos: `https://appassets.mealviewer.com/schoollogo/{schoolSettings.schoolLogo}` (same
+  path in `physicalLocation` and `physicalLocation/search/{query}` results).
 
 ## Decisions
 
@@ -39,4 +41,3 @@ from cache; others hit the API.
 ## Open
 
 - Brand icon: submit to `home-assistant/brands` (the HACS validation ignores `brands` until then).
-- School logo URL base is unknown; `logo_file` is exposed raw.
