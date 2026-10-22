@@ -1,0 +1,93 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Enter the school's MealViewer ID or paste its page URL, e.g. https://schools.mealviewer.com/school/AppletonElementarySchool.",
+        "data": {
+          "school": "School"
+        },
+        "data_description": {
+          "school": "MealViewer school ID (e.g. AppletonElementarySchool) or URL."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "school_not_found": "No MealViewer school found with that ID.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Service is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "days_ahead": "Days ahead",
+          "rollover_time": "Rollover time"
+        },
+        "data_description": {
+          "days_ahead": "How many days of menus to fetch and cache.",
+          "rollover_time": "After this time, the next-menu sensors show the next school day instead of today."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "school_day": {
+        "name": "School day"
+      }
+    },
+    "calendar": {
+      "menu": {
+        "name": "{block}"
+      }
+    },
+    "sensor": {
+      "next_menu": {
+        "name": "Next {block}"
+      }
+    }
+  },
+  "exceptions": {
+    "connection_error": {
+      "message": "Error talking to MealViewer: {error}"
+    },
+    "end_date_before_start_date": {
+      "message": "End date must be on or after start date."
+    },
+    "update_failed": {
+      "message": "Error fetching menus: {error}"
+    }
+  },
+  "services": {
+    "get_menu": {
+      "name": "Get menu",
+      "description": "Returns the full menu (items, nutrition, allergens, school info) for a date range.",
+      "fields": {
+        "config_entry_id": {
+          "name": "School",
+          "description": "The MealViewer school to query."
+        },
+        "start_date": {
+          "name": "Start date",
+          "description": "First date to return. Defaults to today."
+        },
+        "end_date": {
+          "name": "End date",
+          "description": "Last date to return. Defaults to the start date."
+        },
+        "blocks": {
+          "name": "Meals",
+          "description": "Only return these meal blocks (e.g. Breakfast, Lunch)."
+        },
+        "categories": {
+          "name": "Categories",
+          "description": "Only return items in these categories (e.g. ENTREES, SIDES)."
+        }
+      }
+    }
+  }
+}

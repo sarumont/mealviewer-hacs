@@ -1,0 +1,27 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "school_day": {
+        "default": "mdi:school-outline",
+        "state": {
+          "on": "mdi:school"
+        }
+      }
+    },
+    "calendar": {
+      "menu": {
+        "default": "mdi:food"
+      }
+    },
+    "sensor": {
+      "next_menu": {
+        "default": "mdi:silverware-fork-knife"
+      }
+    }
+  },
+  "services": {
+    "get_menu": {
+      "service": "mdi:food-variant"
+    }
+  }
+}
