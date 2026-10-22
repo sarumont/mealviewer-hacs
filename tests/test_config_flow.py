@@ -10,8 +10,11 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import (
 
 from custom_components.mealviewer.const import (
     CONF_DAYS_AHEAD,
+    CONF_END,
+    CONF_MEAL_TIMES,
     CONF_ROLLOVER_TIME,
     CONF_SCHOOL,
+    CONF_START,
     DOMAIN,
 )
 
@@ -85,7 +88,7 @@ async def test_already_configured(
 async def test_options_flow(
     hass: HomeAssistant, mock_api: AiohttpClientMocker, config_entry: MockConfigEntry
 ) -> None:
-    """Options are stored with an int day count."""
+    """General options, then optional serving times for each meal."""
     config_entry.add_to_hass(hass)
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
@@ -94,7 +97,32 @@ async def test_options_flow(
     result = await hass.config_entries.options.async_configure(
         result["flow_id"], {CONF_DAYS_AHEAD: 7.0, CONF_ROLLOVER_TIME: "13:30:00"}
     )
+    assert result["step_id"] == "meal"
+    assert result["description_placeholders"] == {"meal": "Breakfast"}
+
+    # Breakfast: leave empty -> stays all-day.
+    result = await hass.config_entries.options.async_configure(result["flow_id"], {})
+    assert result["description_placeholders"] == {"meal": "Lunch"}
+
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], {CONF_START: "11:15:00"}
+    )
+    assert result["errors"] == {"base": "start_and_end"}
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], {CONF_START: "11:15:00", CONF_END: "11:00:00"}
+    )
+    assert result["errors"] == {"base": "end_before_start"}
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], {CONF_START: "11:15:00", CONF_END: "12:30:00"}
+    )
     await hass.async_block_till_done()
+
     assert result["type"] is FlowResultType.CREATE_ENTRY
-    assert config_entry.options == {CONF_DAYS_AHEAD: 7, CONF_ROLLOVER_TIME: "13:30:00"}
-    assert config_entry.runtime_data.coordinator.days_ahead == 7
+    assert config_entry.options == {
+        CONF_DAYS_AHEAD: 7,
+        CONF_ROLLOVER_TIME: "13:30:00",
+        CONF_MEAL_TIMES: {"lunch": {CONF_START: "11:15:00", CONF_END: "12:30:00"}},
+    }
+    coordinator = config_entry.runtime_data.coordinator
+    assert coordinator.days_ahead == 7
+    assert set(coordinator.meal_times) == {"lunch"}

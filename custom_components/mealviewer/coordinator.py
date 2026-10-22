@@ -15,7 +15,10 @@ from homeassistant.util import dt as dt_util
 from .api import MealViewerClient, MealViewerError
 from .const import (
     CONF_DAYS_AHEAD,
+    CONF_END,
+    CONF_MEAL_TIMES,
     CONF_ROLLOVER_TIME,
+    CONF_START,
     DEFAULT_DAYS_AHEAD,
     DEFAULT_ROLLOVER_TIME,
     DOMAIN,
@@ -61,6 +64,11 @@ class MealViewerCoordinator(DataUpdateCoordinator[Menu]):
         self.rollover: time = time.fromisoformat(
             options.get(CONF_ROLLOVER_TIME, DEFAULT_ROLLOVER_TIME)
         )
+        # slug -> (start, end) serving times; meals without times stay all-day.
+        self.meal_times: dict[str, tuple[time, time]] = {
+            slug: (time.fromisoformat(t[CONF_START]), time.fromisoformat(t[CONF_END]))
+            for slug, t in options.get(CONF_MEAL_TIMES, {}).items()
+        }
         self.window: tuple[date, date] | None = None
 
     @callback

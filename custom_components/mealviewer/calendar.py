@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from typing import override
 
 from homeassistant.components.calendar import CalendarEntity, CalendarEvent
@@ -69,11 +69,17 @@ def describe_block(block: MealBlock) -> str:
     )
 
 
-def block_event(block: MealBlock) -> CalendarEvent:
-    """All-day event for a meal block."""
+def block_event(block: MealBlock, times: tuple[time, time] | None) -> CalendarEvent:
+    """Event for a meal block: timed if serving times are set, else all-day."""
+    start: date | datetime = block.date
+    end: date | datetime = block.date + timedelta(days=1)
+    if times:
+        tz = dt_util.get_default_time_zone()
+        start = datetime.combine(block.date, times[0], tz)
+        end = datetime.combine(block.date, times[1], tz)
     return CalendarEvent(
-        start=block.date,
-        end=block.date + timedelta(days=1),
+        start=start,
+        end=end,
         summary=entree_summary(block),
         description=describe_block(block),
         uid=f"{block.id}_{block.date.isoformat()}",
@@ -97,8 +103,13 @@ class MealViewerCalendarEntity(MealViewerEntity, CalendarEntity):
     @override
     def event(self) -> CalendarEvent | None:
         """Today's or the next upcoming menu."""
-        block = self.coordinator.data.next_block(self._slug, dt_util.now().date())
-        return block_event(block) if block else None
+        now = dt_util.now()
+        times = self.coordinator.meal_times.get(self._slug)
+        on_or_after = now.date()
+        if times and now.time() >= times[1]:
+            on_or_after += timedelta(days=1)
+        block = self.coordinator.data.next_block(self._slug, on_or_after)
+        return block_event(block, times) if block else None
 
     @override
     async def async_get_events(
@@ -115,8 +126,9 @@ class MealViewerCalendarEntity(MealViewerEntity, CalendarEntity):
                 translation_key="connection_error",
                 translation_placeholders={"error": str(err)},
             ) from err
+        times = self.coordinator.meal_times.get(self._slug)
         return [
-            block_event(block)
+            block_event(block, times)
             for day in menu.days.values()
             if (block := day.block(self._slug)) and not block.blacked_out
         ]

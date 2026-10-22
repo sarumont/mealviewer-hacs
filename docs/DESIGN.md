@@ -24,7 +24,8 @@ announcements.
 - **One config entry per school**, unique id = physicalLocation id (Mealie pattern).
 - **Legacy flat item fields dropped** (`calories`, `g_T_Fat`, `milk`, `egg`, …): they're zeros or
   `false` even when `nutritionals`/`allergens` say otherwise. Diagnostics include the raw payload.
-- **Calendar per meal block**; event title = entrees, description = full menu.
+- **Calendar per meal block**; event title = entrees, description = full menu. Events are all-day
+  unless the user sets serving times for that meal in options (MealViewer has no times).
 - **Next-menu sensor per block** with structured attributes for dashboards; rolls over at a
   configurable time (default noon). `items` is unrecorded.
 - **School-day binary sensor** for automations.

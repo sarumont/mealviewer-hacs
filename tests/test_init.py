@@ -16,7 +16,13 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import (
     AiohttpClientMocker,
 )
 
-from custom_components.mealviewer.const import DOMAIN
+from custom_components.mealviewer.const import (
+    CONF_END,
+    CONF_MEAL_TIMES,
+    CONF_SCHOOL,
+    CONF_START,
+    DOMAIN,
+)
 
 from .conftest import MENU_URL
 
@@ -163,3 +169,59 @@ async def test_get_menu_service(
     items = thursday[0]["lines"][0]["items"]
     assert {i["category"] for i in items} == {"ENTREES"}
     assert items[0]["allergens"][0]["name"] == "Gluten"
+
+
+async def test_timed_calendar(
+    hass: HomeAssistant,
+    mock_api: AiohttpClientMocker,
+    morning: FrozenDateTimeFactory,
+) -> None:
+    """Serving times make events timed; the calendar is on only while served."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Appleton Elementary School",
+        unique_id="9003",
+        data={CONF_SCHOOL: "AppletonElementarySchool"},
+        options={
+            CONF_MEAL_TIMES: {"lunch": {CONF_START: "11:15:00", CONF_END: "12:30:00"}}
+        },
+    )
+    await _setup(hass, entry)
+
+    state = hass.states.get(LUNCH_CALENDAR)
+    assert state.state == "off"
+    assert state.attributes["start_time"] == "2026-10-22 11:15:00"
+    assert state.attributes["end_time"] == "2026-10-22 12:30:00"
+    assert state.attributes["all_day"] is False
+    # Breakfast has no times, so it stays all-day (and on).
+    breakfast = hass.states.get("calendar.appleton_elementary_school_breakfast")
+    assert breakfast.attributes["all_day"] is True
+
+    morning.move_to(_local(2026, 10, 22, 11, 30))
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert hass.states.get(LUNCH_CALENDAR).state == "on"
+
+    morning.move_to(_local(2026, 10, 22, 12, 31))
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    state = hass.states.get(LUNCH_CALENDAR)
+    assert state.state == "off"
+    assert state.attributes["start_time"] == "2026-10-23 11:15:00"
+
+    result = await hass.services.async_call(
+        CALENDAR_DOMAIN,
+        "get_events",
+        {
+            "entity_id": LUNCH_CALENDAR,
+            "start_date_time": "2026-10-22T00:00:00",
+            "end_date_time": "2026-10-24T00:00:00",
+        },
+        blocking=True,
+        return_response=True,
+    )
+    events = result[LUNCH_CALENDAR]["events"]
+    assert [(e["start"], e["end"]) for e in events] == [
+        ("2026-10-22T11:15:00-07:00", "2026-10-22T12:30:00-07:00"),
+        ("2026-10-23T11:15:00-07:00", "2026-10-23T12:30:00-07:00"),
+    ]

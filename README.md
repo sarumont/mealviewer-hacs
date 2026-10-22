@@ -18,7 +18,7 @@ Per school (one device), per meal block the school serves (Breakfast, Lunch, …
 
 | Entity | State | Notes |
 | --- | --- | --- |
-| `calendar.<school>_<meal>` | current/next menu | All-day events. Title = entrees; description = full menu by category with macros and allergens. |
+| `calendar.<school>_<meal>` | current/next menu | All-day events, or timed if serving times are set. Title = entrees; description = full menu by category with macros and allergens. |
 | `sensor.<school>_next_<meal>` | entrees, comma-separated | Today's menu, or the next school day's after the rollover time. Attributes: `date`, `block`, `entrees`, `items` (full structured items). |
 | `binary_sensor.<school>_school_day` | on/off | On when any meal is served today. |
 
@@ -28,6 +28,9 @@ Per school (one device), per meal block the school serves (Breakfast, Lunch, …
 
 - **Days ahead** (default 14): menu window fetched and cached.
 - **Rollover time** (default 12:00): when next-menu sensors switch to the next school day.
+- **Serving times** (optional, per meal): a start and end for each meal. Its calendar events become
+  timed, and the calendar is on only while that meal is served (handy for automations). MealViewer
+  doesn't publish serving times, so they come from you.
 
 Menus refresh every 6 hours and at midnight.
 

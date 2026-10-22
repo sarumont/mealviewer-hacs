@@ -31,7 +31,19 @@
           "days_ahead": "How many days of menus to fetch and cache.",
           "rollover_time": "After this time, the next-menu sensors show the next school day instead of today."
         }
+      },
+      "meal": {
+        "title": "{meal} serving times",
+        "description": "Optional. With times set, {meal} calendar events are timed instead of all-day, and the calendar is on while {meal} is served. Leave both empty for all-day events.",
+        "data": {
+          "start": "Start",
+          "end": "End"
+        }
       }
+    },
+    "error": {
+      "start_and_end": "Set both start and end, or leave both empty.",
+      "end_before_start": "End must be after start."
     }
   },
   "entity": {
