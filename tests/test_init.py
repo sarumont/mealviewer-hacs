@@ -6,6 +6,7 @@ from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.calendar import DOMAIN as CALENDAR_DOMAIN
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 from homeassistant.util import dt as dt_util
 import pytest
 from pytest_homeassistant_custom_component.common import (
@@ -73,6 +74,8 @@ async def test_setup_entities(
     calendar = hass.states.get(LUNCH_CALENDAR)
     assert calendar.attributes["message"] == "Homestyle turkey & gravy, Deli slider"
     assert "Entrees\n- Homestyle turkey & gravy" in calendar.attributes["description"]
+    registry_entry = er.async_get(hass).async_get(LUNCH_CALENDAR)
+    assert registry_entry.options[CALENDAR_DOMAIN] == {"color": "#1bb18c"}
 
     morning.move_to(_local(2026, 10, 22, 12, 0, 1))
     async_fire_time_changed(hass, _local(2026, 10, 22, 12))

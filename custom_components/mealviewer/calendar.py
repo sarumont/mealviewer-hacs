@@ -98,6 +98,8 @@ class MealViewerCalendarEntity(MealViewerEntity, CalendarEntity):
         super().__init__(coordinator, f"{slug}_calendar")
         self._slug = slug
         self._attr_translation_placeholders = {"block": name}
+        # Only applied when the entity is first registered; users can change it.
+        self._attr_initial_color = coordinator.data.school.color
 
     @property
     @override

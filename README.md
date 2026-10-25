@@ -18,7 +18,7 @@ Per school (one device), per meal block the school serves (Breakfast, Lunch, …
 
 | Entity | State | Notes |
 | --- | --- | --- |
-| `calendar.<school>_<meal>` | current/next menu | All-day events, or timed if serving times are set. Title = entrees; description = full menu by category with macros and allergens. |
+| `calendar.<school>_<meal>` | current/next menu | All-day events, or timed if serving times are set. Title = entrees; description = full menu by category with macros and allergens. Starts in the school's MealViewer color. |
 | `sensor.<school>_next_<meal>` | entrees, comma-separated | Today's menu, or the next school day's after the rollover time. Attributes: `date`, `block`, `entrees`, `items` (full structured items). |
 | `binary_sensor.<school>_school_day` | on/off | On when any meal is served today. |
 
