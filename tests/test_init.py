@@ -7,6 +7,7 @@ from homeassistant.components.calendar import DOMAIN as CALENDAR_DOMAIN
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
+from homeassistant.loader import async_get_integration
 from homeassistant.util import dt as dt_util
 import pytest
 from pytest_homeassistant_custom_component.common import (
@@ -228,3 +229,9 @@ async def test_timed_calendar(
         ("2026-10-22T11:15:00-07:00", "2026-10-22T12:30:00-07:00"),
         ("2026-10-23T11:15:00-07:00", "2026-10-23T12:30:00-07:00"),
     ]
+
+
+async def test_local_brand_assets(hass: HomeAssistant) -> None:
+    """HA picks up the bundled brand/ icons."""
+    integration = await async_get_integration(hass, DOMAIN)
+    assert integration.has_branding

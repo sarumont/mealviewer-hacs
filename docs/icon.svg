@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Source for custom_components/mealviewer/brand/icon*.png -->
+  <!-- Tray -->
+  <rect x="4" y="24" width="248" height="208" rx="36" fill="#2a9d8f"/>
+  <!-- Compartments -->
+  <g fill="#e9f5f3">
+    <rect x="18" y="38" width="66.7" height="72" rx="14"/>
+    <rect x="94.7" y="38" width="66.7" height="72" rx="14"/>
+    <rect x="171.3" y="38" width="66.7" height="72" rx="14"/>
+    <rect x="18" y="120" width="220" height="98" rx="16"/>
+  </g>
+  <!-- Apple -->
+  <rect x="49" y="47" width="5" height="12" rx="2" fill="#7a4a24"/>
+  <ellipse cx="62" cy="52" rx="9" ry="5" transform="rotate(-25 62 52)" fill="#6ab04c"/>
+  <circle cx="51.3" cy="79" r="22" fill="#e63946"/>
+  <!-- Peas -->
+  <g fill="#6ab04c">
+    <circle cx="116" cy="64" r="10"/>
+    <circle cx="140" cy="64" r="10"/>
+    <circle cx="128" cy="84" r="10"/>
+    <circle cx="106" cy="88" r="9"/>
+    <circle cx="150" cy="88" r="9"/>
+  </g>
+  <!-- Corn -->
+  <g fill="#f4c430">
+    <rect x="183" y="54" width="14" height="14" rx="4"/>
+    <rect x="198" y="54" width="14" height="14" rx="4"/>
+    <rect x="213" y="54" width="14" height="14" rx="4"/>
+    <rect x="183" y="70" width="14" height="14" rx="4"/>
+    <rect x="198" y="70" width="14" height="14" rx="4"/>
+    <rect x="213" y="70" width="14" height="14" rx="4"/>
+    <rect x="190" y="86" width="14" height="14" rx="4"/>
+    <rect x="206" y="86" width="14" height="14" rx="4"/>
+  </g>
+  <!-- Rectangle pizza -->
+  <rect x="44" y="134" width="168" height="70" rx="12" fill="#d98a2b"/>
+  <rect x="53" y="143" width="150" height="52" rx="7" fill="#f6d365"/>
+  <g fill="#c0392b">
+    <circle cx="76" cy="160" r="9"/>
+    <circle cx="112" cy="178" r="9"/>
+    <circle cx="146" cy="158" r="9"/>
+    <circle cx="180" cy="178" r="9"/>
+  </g>
+</svg>

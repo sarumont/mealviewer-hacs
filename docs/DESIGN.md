@@ -39,6 +39,14 @@ The coordinator fetches today .. today+N (default 14) every 6h and at midnight. 
 listeners are updated without a fetch. Calendar/service ranges inside the cached window are served
 from cache; others hit the API.
 
-## Open
+## Brand
 
-- Brand icon: submit to `home-assistant/brands` (the HACS validation ignores `brands` until then).
+Generic lunch-tray icon (not MealViewer's logo), shipped locally in
+`custom_components/mealviewer/brand/`. HA serves local brand images before falling back to the
+brands CDN, and HACS's `brands` check accepts `brand/icon.png`, so no `home-assistant/brands` PR
+is needed. Source: `docs/icon.svg`; regenerate with:
+
+```sh
+rsvg-convert -w 256 -h 256 docs/icon.svg -o custom_components/mealviewer/brand/icon.png
+rsvg-convert -w 512 -h 512 docs/icon.svg -o custom_components/mealviewer/brand/icon@2x.png
+```
