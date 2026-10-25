@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/sarumont/mealviewer-hacs/compare/v0.1.0...v0.2.0) (2026-10-25)
+
+
+### Features
+
+* add lunch-tray brand icon ([#8](https://github.com/sarumont/mealviewer-hacs/issues/8)) ([2907979](https://github.com/sarumont/mealviewer-hacs/commit/2907979e8b735a333dae67101ddbfa663ea2a6cf))
+
 ## 0.1.0 (2026-10-25)
 
 
