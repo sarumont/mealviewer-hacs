@@ -4,6 +4,11 @@ HACS integration for school breakfast and lunch menus from [MealViewer](https://
 
 ## Install
 
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sarumont&repository=mealviewer-hacs&category=integration)
+
+Click the button above to open this repository in HACS (it adds it as a custom repository if needed),
+then skip to step 2. Or manually:
+
 1. HACS → ⋮ → Custom repositories → add `https://github.com/sarumont/mealviewer-hacs` as **Integration**.
 2. Install **MealViewer**, restart Home Assistant.
 3. Settings → Devices & services → Add integration → **MealViewer**.
@@ -73,3 +78,12 @@ uv sync
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
 ```
+
+### Releases
+
+Versioning is automated with [release-please](https://github.com/googleapis/release-please) from
+[Conventional Commits](https://www.conventionalcommits.org) (PR titles, since PRs are squash-merged):
+`fix:` → patch, `feat:` → minor (while < 1.0), `feat!:` / `BREAKING CHANGE` → minor before 1.0, major after.
+
+Each push to `main` updates a release PR that bumps `manifest.json`/`pyproject.toml` and
+`CHANGELOG.md`. Merging it tags `vX.Y.Z` and publishes the GitHub release that HACS installs.
