@@ -1,7 +1,9 @@
 {
   "domain": "mealviewer",
   "name": "MealViewer",
-  "codeowners": ["@sarumont"],
+  "codeowners": [
+    "@sarumont"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/sarumont/mealviewer-hacs",
   "integration_type": "service",
